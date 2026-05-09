@@ -6,7 +6,7 @@ from handlers.loadtrail import loadtrailProc
 IN_DIR = Path('IN')
 OUT_DIR = Path('OUT')
 FIELDNAMES = ['mfr', 'invoice_number', 'invoice_date', 'qty',
-              'item_number', 'description', 'unit_price', 'extension']
+              'item_number', 'description', 'unit_price', 'extension', 'desc_full']
 
 
 def get_existing_invoice_numbers(csv_path):
@@ -47,6 +47,13 @@ def main():
 
         if invoice_number in existing_invoices:
             print(f"WARNING: possible duplicate data — invoice {invoice_number} already exists in output file")
+
+        if out_path.exists() and out_path.stat().st_size > 0:
+            with open(out_path, 'rb') as f:
+                f.seek(-1, 2)
+                if f.read(1) != b'\n':
+                    with open(out_path, 'a') as fix:
+                        fix.write('\n')
 
         with open(out_path, 'a', newline='') as f:
             writer = csv.DictWriter(f, fieldnames=FIELDNAMES)

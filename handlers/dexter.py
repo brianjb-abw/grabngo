@@ -24,6 +24,7 @@ def _parse_page(page_text, invoice_number, invoice_date):
 
     rows = []
     description = None
+    desc_parts = []
     i = start
 
     while i < len(lines):
@@ -42,6 +43,7 @@ def _parse_page(page_text, invoice_number, invoice_date):
 
         if description is None:
             description = stripped
+            desc_parts = [stripped]
             continue
 
         m = _DATA_LINE.search(stripped)
@@ -55,6 +57,7 @@ def _parse_page(page_text, invoice_number, invoice_date):
                     'qty': inv_qty,
                     'item_number': m.group(5),
                     'description': description,
+                    'desc_full': ' '.join(desc_parts),
                     'unit_price': f'{_parse_num(m.group(2)):.2f}',
                     'extension': f'{_parse_num(m.group(3)):.2f}',
                 })
@@ -67,6 +70,9 @@ def _parse_page(page_text, invoice_number, invoice_date):
                 if 'COO:' in coo:
                     break
             description = None
+            desc_parts = []
+        else:
+            desc_parts.append(stripped)
 
     return rows
 

@@ -45,6 +45,7 @@ def loadtrailProc(pdf_path):
                         'qty': qty,
                         'item_number': item_number,
                         'description': description,
+                        'desc_full': description,
                         'unit_price': f'{unit_price:.2f}',
                         'extension': f'{extension:.2f}',
                     })
