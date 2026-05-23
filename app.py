@@ -1,10 +1,25 @@
+import os
 import csv
+from dotenv import load_dotenv
 from pathlib import Path
 from handlers.dexter import dexterProc
 from handlers.loadtrail import loadtrailProc
 
-IN_DIR = Path('IN')
-OUT_DIR = Path('OUT')
+load_dotenv()
+
+BASE_PATH = os.getenv("BASE_PATH")
+in_dir = "p_IN"
+out_dir = "p_OUT"
+out_file = "output.csv"
+
+
+# IN_DIR = Path('IN')
+IN_DIR = Path(os.path.join(BASE_PATH, in_dir))
+print(IN_DIR)       # <<<<<<<<<<<<<< remove this
+# OUT_DIR = Path('OUT')
+out_path = Path(os.path.join(BASE_PATH, out_dir, out_file))
+print(out_path)     # <<<<<<<<<<<<<< remove this
+
 FIELDNAMES = ['mfr', 'invoice_number', 'invoice_date', 'qty',
               'item_number', 'description', 'unit_price', 'extension', 'desc_full']
 
@@ -23,8 +38,8 @@ def get_existing_invoice_numbers(csv_path):
 
 
 def main():
-    OUT_DIR.mkdir(exist_ok=True)
-    out_path = OUT_DIR / 'output.csv'
+    # OUT_DIR.mkdir(exist_ok=True)
+    # out_path = OUT_DIR / 'output.csv'
 
     existing_invoices = get_existing_invoice_numbers(out_path)
     need_header = not out_path.exists() or out_path.stat().st_size == 0
