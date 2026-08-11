@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from pathlib import Path
 from handlers.dexter import dexterProc
 from handlers.loadtrail import loadtrailProc
+from handlers.badboy import badboyProc
 
 load_dotenv()
 
@@ -53,6 +54,8 @@ def main():
             rows, stated_total = loadtrailProc(pdf)
         elif name.startswith('DX') or name.startswith('D-'):
             rows, stated_total = dexterProc(pdf)
+        elif name.startswith('BB'):
+            rows, stated_total = badboyProc(pdf)
         else:
             continue
 
