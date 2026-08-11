@@ -7,18 +7,19 @@ from handlers.loadtrail import loadtrailProc
 
 load_dotenv()
 
-BASE_PATH = os.getenv("BASE_PATH")
-in_dir = "p_IN"
-out_dir = "p_OUT"
+# BASE_PATH = os.getenv("BASE_PATH")
+# in_dir = "p_IN"
+# out_dir = "p_OUT"
 out_file = "output.csv"
 
 
-# IN_DIR = Path('IN')
-IN_DIR = Path(os.path.join(BASE_PATH, in_dir))
-print(IN_DIR)       # <<<<<<<<<<<<<< remove this
-# OUT_DIR = Path('OUT')
-out_path = Path(os.path.join(BASE_PATH, out_dir, out_file))
-print(out_path)     # <<<<<<<<<<<<<< remove this
+IN_DIR = Path('IN')
+# IN_DIR = Path(os.path.join(BASE_PATH, in_dir))
+# print(IN_DIR)       # <<<<<<<<<<<<<< remove this
+OUT_DIR = Path('OUT')
+out_path = Path(os.path.join(OUT_DIR, out_file))
+# out_path = Path(os.path.join(BASE_PATH, out_dir, out_file))
+# print(out_path)     # <<<<<<<<<<<<<< remove this
 
 FIELDNAMES = ['mfr', 'invoice_number', 'invoice_date', 'qty',
               'item_number', 'description', 'unit_price', 'extension', 'desc_full']

@@ -1,0 +1,35 @@
+GrabNGo - Bad Boy Handler
+
+Filename will begin with "BB-"
+I won't be putting invoices from multiple vendors in the input folder - 
+when running the program it will be one or more invoices from a single vendor.
+
+Output Columns:
+mfr, inv_num, inv_d, qty, item_num, description, unit_price, extension, desc_full
+
+- mfr:  always "BB"
+
+- inv_num, inv_d:  these seem to come out pretty clean, "Invoice #:" followed by the invoice number, followed by "Date:" followed by the invoice date. Please trim the leading 0's in the invoice number.
+
+after this there are number of fields with customer information and such.
+the beginning of the parts line items is preceded by "Disc    %", "Price", "Extension"
+
+a part line item begins with the item_num and ends with two currency fields; unit_price and extension.
+the item_num for the first part line item seems to usually immediately follow "Extension".
+
+- qty:  in the part line item, the quantities (ordered, shipped, back-ordered) follow the description.  Here I only want to capture the second number representing the shipped qty
+
+- item_num:  typical format ###-####-##, though I can't rule out an occaisional variation
+
+- description:  follows the item number, I've noticed that they sometimes put multiple space gaps between words - I can't think of a situation where the wider gap is helpful, so if possible I'd like these trimmed down to a single space
+
+- unit_price:  after the three qty numbers we get a currency, percent, currency, currency.  The first currency and the percent can be ignored.  The second currency is the unit_price.
+
+- extension:  this is the currency that follows the unit price.  I would like to do an accuracy check here.  qty * unit_price should equal extension.  If this fails, just print a simple error message, something like "err: accuracy, invoice num #####, item num ###-####-##".  Also, as part rows are processed, a running count of part rows processed and a running sum of the extension amounts should be kept.
+
+- I left field desc_full in just for consistency with the Dexter handler.  For BB just make desc_full always = ""
+
+At the end of the parts rows there is often a "FREIGHT CHARGES" row.  This can be ignored.
+
+The foot of the invoice begins with "Subtotal:"  followed by a currency number.  At this point another accuracy check should be performed comparing the subtotal amount to the running sum of the extension amounts from the part rows.  Again, if this check fails, print a simple error message, something like "err: accuracy, invoice num ###### doesn't foot".  If everything was successful print a simple message such as "Inv ###### processed, sub-tot: $###.##, line items #"
+
