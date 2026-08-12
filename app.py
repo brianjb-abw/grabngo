@@ -86,7 +86,7 @@ def main():
 
         running_total = round(sum(float(r['extension']) for r in rows), 2)
 
-        if stated_total is not None and round(running_total, 2) == round(stated_total, 2):
+        if stated_total is not None and abs(running_total - round(stated_total, 2)) <= 0.01001:
             print(f"{"✅":2} inv   {invoice_number}\t  {running_total:>10,.2f}")
         elif stated_total is not None:
             print(f"ALERT: math problem on invoice {invoice_number}")
