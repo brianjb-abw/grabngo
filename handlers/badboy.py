@@ -55,12 +55,13 @@ def _parse_page(lines, invoice_number, invoice_date):
                 extension = _parse_decimal(ext_m.group(1))
 
                 if qty > 0:
-                    unit_price = extension / qty
-                    unit_price_cents = unit_price.quantize(_CENT, rounding=ROUND_HALF_UP)
-
-                    if unit_price_cents != printed_unit_price:
+                    # line item accuracy check
+                    unit_price_calc = extension / qty
+                    unit_price_calc = unit_price_calc.quantize(_MIL, rounding=ROUND_HALF_UP)
+                    if abs(unit_price_calc - printed_unit_price) > .01:
                         print(f"err: accuracy, invoice num {invoice_number}, item num {item_number}")
 
+                    # line append
                     rows.append({
                         'mfr': 'BB',
                         'invoice_number': invoice_number,
@@ -69,7 +70,7 @@ def _parse_page(lines, invoice_number, invoice_date):
                         'item_number': item_number,
                         'description': _clean_desc(desc_line),
                         'desc_full': '',
-                        'unit_price': f'{unit_price.quantize(_MIL, rounding=ROUND_HALF_UP)}',
+                        'unit_price': f'{unit_price_calc:.3f}',
                         'extension': f'{extension:.2f}',
                     })
 
