@@ -58,7 +58,7 @@ def _parse_page(lines, invoice_number, invoice_date):
                     # line item accuracy check
                     unit_price_calc = extension / qty
                     unit_price_calc = unit_price_calc.quantize(_MIL, rounding=ROUND_HALF_UP)
-                    if abs(unit_price_calc - printed_unit_price) > .01:
+                    if abs(unit_price_calc - printed_unit_price) > .005:
                         print(f"err: accuracy, invoice num {invoice_number}, item num {item_number}")
 
                     # line append
